@@ -74,6 +74,44 @@ public class FinancialTracker {
         // TODO: create file if it does not exist, then read each line,
         //       parse the five fields, build a Transaction object,
         //       and add it to the transactions list.
+
+        try {
+            File file = new File(fileName);
+
+            if (!file.exists()) {
+                file.createNewFile();
+                return;
+            }
+
+            Scanner fileScanner = new Scanner(file);
+
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+
+                String[] parts = line.split("\\|");
+                if (parts.length != 5) {
+                    continue;
+                }
+
+                String dateStr = parts[0];
+                String timeStr = parts[1];
+                String description = parts[2];
+                String vendor = parts[3];
+                String amountStr = parts[4];
+
+                LocalDate date = LocalDate.parse(dateStr);
+                LocalTime time = LocalTime.parse(timeStr);
+                double amount = Double.parseDouble(amountStr);
+
+                Transaction t = new Transaction(date, time, description, vendor, amount);
+                transactions.add(t);
+            }
+
+            fileScanner.close();
+
+        } catch (Exception e) {
+            System.out.println("Error loading transactions: " + e.getMessage());
+        }
     }
 
     /* ------------------------------------------------------------------
