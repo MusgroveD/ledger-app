@@ -337,11 +337,61 @@ public class FinancialTracker {
 
     private static void filterTransactionsByVendor(String vendor) {
         // TODO – iterate transactions, print those with matching vendor
+
+        System.out.printf("%-12s %-10s %-20s %-20s %-10s%n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+
+        for (Transaction t : transactions) {
+            if (t.getVendor().equalsIgnoreCase(vendor)) {
+                System.out.printf("%-12s %-10s %-20s %-20s %-10.2f%n",
+                        t.getDate(),
+                        t.getTime(),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+            }
+        }
     }
 
     private static void customSearch(Scanner scanner) {
         // TODO – prompt for any combination of date range, description,
         //        vendor, and exact amount, then display matches
+
+        System.out.print("Start date (yyyy-MM-dd) or blank: ");
+        String startInput = scanner.nextLine();
+        LocalDate start = startInput.isEmpty() ? null : LocalDate.parse(startInput);
+
+        System.out.print("End date (yyyy-MM-dd) or blank: ");
+        String endInput = scanner.nextLine();
+        LocalDate end = endInput.isEmpty() ? null : LocalDate.parse(endInput);
+
+        System.out.print("Description or blank: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Vendor or blank: ");
+        String vendor = scanner.nextLine();
+
+        System.out.print("Exact amount or blank: ");
+        String amountInput = scanner.nextLine();
+        Double amount = amountInput.isEmpty() ? null : Double.parseDouble(amountInput);
+
+        System.out.printf("%-12s %-10s %-20s %-20s %-10s%n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+
+        for (Transaction t : transactions) {
+            if (start != null && t.getDate().isBefore(start)) continue;
+            if (end != null && t.getDate().isAfter(end)) continue;
+            if (!description.isEmpty() && !t.getDescription().equalsIgnoreCase(description)) continue;
+            if (!vendor.isEmpty() && !t.getVendor().equalsIgnoreCase(vendor)) continue;
+            if (amount != null && t.getAmount() != amount) continue;
+
+            System.out.printf("%-12s %-10s %-20s %-20s %-10.2f%n",
+                    t.getDate(),
+                    t.getTime(),
+                    t.getDescription(),
+                    t.getVendor(),
+                    t.getAmount());
+        }
     }
 
     /* ------------------------------------------------------------------
