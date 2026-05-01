@@ -265,7 +265,23 @@ public class FinancialTracker {
         }
     }
 
-    private static void displayPayments() { /* TODO – only amount < 0               */ }
+    private static void displayPayments() {
+        /* TODO – only amount < 0               */
+
+        System.out.printf("%-12s %-10s %-20s %-20s %-10s%n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+
+        for (Transaction t : transactions) {
+            if (t.getAmount() < 0) {
+                System.out.printf("%-12s %-10s %-20s %-20s %-10.2f%n",
+                        t.getDate(),
+                        t.getTime(),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+            }
+        }
+    }
 
     /* ------------------------------------------------------------------
        Reports menu
@@ -303,6 +319,20 @@ public class FinancialTracker {
        ------------------------------------------------------------------ */
     private static void filterTransactionsByDate(LocalDate start, LocalDate end) {
         // TODO – iterate transactions, print those within the range
+
+        System.out.printf("%-12s %-10s %-20s %-20s %-10s%n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+
+        for (Transaction t : transactions) {
+            if (!t.getDate().isBefore(start) && !t.getDate().isAfter(end)) {
+                System.out.printf("%-12s %-10s %-20s %-20s %-10.2f%n",
+                        t.getDate(),
+                        t.getTime(),
+                        t.getDescription(),
+                        t.getVendor(),
+                        t.getAmount());
+            }
+        }
     }
 
     private static void filterTransactionsByVendor(String vendor) {
