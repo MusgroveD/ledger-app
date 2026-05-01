@@ -315,8 +315,18 @@ public class FinancialTracker {
                     LocalDate firstDayPrevMonth = lastDayPrevMonth.withDayOfMonth(1);
                     filterTransactionsByDate(firstDayPrevMonth, lastDayPrevMonth);
                 }
-                case "3" -> {/* TODO – year-to-date report   */ }
-                case "4" -> {/* TODO – previous year report  */ }
+                case "3" -> {
+                    LocalDate now = LocalDate.now();
+                    LocalDate start = now.withDayOfYear(1);
+                    LocalDate end = now;
+                    filterTransactionsByDate(start, end);
+                }
+                case "4" -> {
+                    LocalDate now = LocalDate.now();
+                    LocalDate start = now.minusYears(1).withDayOfYear(1);
+                    LocalDate end = now.minusYears(1).withDayOfYear(now.minusYears(1).lengthOfYear());
+                    filterTransactionsByDate(start, end);
+                }
                 case "5" -> {/* TODO – prompt for vendor then report */ }
                 case "6" -> customSearch(scanner);
                 case "0" -> running = false;
