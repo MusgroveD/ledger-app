@@ -166,6 +166,39 @@ public class FinancialTracker {
      */
     private static void addPayment(Scanner scanner) {
         // TODO
+
+        try {
+            System.out.print("Enter date and time (yyyy-MM-dd HH:mm:ss): ");
+            String dateTimeInput = scanner.nextLine();
+            String[] parts = dateTimeInput.split(" ");
+            LocalDate date = LocalDate.parse(parts[0]);
+            LocalTime time = LocalTime.parse(parts[1]);
+
+            System.out.print("Enter description: ");
+            String description = scanner.nextLine();
+
+            System.out.print("Enter vendor: ");
+            String vendor = scanner.nextLine();
+
+            System.out.print("Enter amount: ");
+            double amount = Double.parseDouble(scanner.nextLine());
+            if (amount <= 0) {
+                System.out.println("Amount must be positive.");
+                return;
+            }
+
+            amount = -amount;
+
+            Transaction t = new Transaction(date, time, description, vendor, amount);
+            transactions.add(t);
+
+            java.io.FileWriter writer = new java.io.FileWriter(FILE_NAME, true);
+            writer.write(t.toString() + "\n");
+            writer.close();
+
+        } catch (Exception e) {
+            System.out.println("Error adding payment: " + e.getMessage());
+        }
     }
 
     /* ------------------------------------------------------------------
